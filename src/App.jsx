@@ -41,6 +41,7 @@ const getRandomHexColor = arr => {
   if (isValidHexColor) {
     return `#${randomColor}`
   } else {
+    // recursively get random colors until all its valid hex color
     return getRandomHexColor(arr)
   }
 }
@@ -53,20 +54,18 @@ function App () {
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState(null)
 
   useEffect(() => {
-    setColor(getRandomHexColor(digits))
-    setCorrectAnswerIndex(null)
-    setWrongAnswerIndex(null)
-  }, [restart])
-
-  useEffect(() => {
+    const newColor = getRandomHexColor(digits)
+    setColor(newColor)
     setAnswers(
       shuffleArray([
-        color,
+        newColor,
         getRandomHexColor(digits),
         getRandomHexColor(digits)
       ])
     )
-  }, [color])
+    setCorrectAnswerIndex(null)
+    setWrongAnswerIndex(null)
+  }, [restart])
 
   const checkAnswer = (e, index) => {
     if (e.target.textContent === color) {
@@ -74,8 +73,6 @@ function App () {
       setWrongAnswerIndex(null)
       setTimeout(() => {
         setRestart(prevRestart => !prevRestart)
-        setColor(prevColor => getRandomHexColor(digits))
-        setCorrectAnswerIndex(null)
       }, 2000)
     } else {
       setWrongAnswerIndex(index)
@@ -92,14 +89,14 @@ function App () {
           {answer}
         </button>
         {wrongAnswerIndex === index && <h2>Wrong Answer!</h2>}
-        {correctAnswerIndex === index && <h2>correct!</h2>}
+        {correctAnswerIndex === index && <h2>Correct!</h2>}
       </div>
     ))
   }
 
   return (
     <>
-      <h1 style={{ fontSize: '2.2rem' }}>try to guess the hex color</h1>
+      <h1 style={{ fontSize: '2.2rem' }}>Try to guess the hex color</h1>
       <div className='guess' style={{ backgroundColor: `${color}` }}></div>
       <div style={{ display: 'flex' }}>{getGuessButtons()}</div>
     </>

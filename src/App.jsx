@@ -41,7 +41,7 @@ const getRandomHexColor = arr => {
   if (isValidHexColor) {
     return `#${randomColor}`
   } else {
-    // recursively get random colors until all its valid hex color
+    // recursively get random colors until hex color is valid
     return getRandomHexColor(arr)
   }
 }
